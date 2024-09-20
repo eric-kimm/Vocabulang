@@ -1,0 +1,12 @@
+
+.hover-highlight {
+    background-color: rgb(185, 225, 238);
+    border: 1px solid rgb(185, 225, 238);
+    border-radius: 2px;
+}
+
+.click-highlight {
+    background-color: rgb(185, 225, 238);
+    border: 2px solid rgb(83, 163, 190);
+    border-radius: 3px;
+}
