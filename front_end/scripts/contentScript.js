@@ -17,12 +17,12 @@
 let hoveredElement = null;
 const elementsMap = new Map();
 
+// Wrap all words on the page with span tags
 function wrapWordsInElement(element) {
     // Skip certain tags
     if (['SCRIPT', 'STYLE', 'IFRAME', 'NOSCRIPT', 'INPUT', 'TEXTAREA', 'BUTTON', 'SELECT'].includes(element.tagName)) {
         return;
     }
-
     element.childNodes.forEach((node) => {
         if (node.nodeType === Node.TEXT_NODE && node.textContent.trim().length > 0) {
             let words = node.textContent.split(/\s+/);
@@ -44,26 +44,28 @@ function wrapWordsInElement(element) {
     });
 }
 
-
-// Apply word wrapping to all elements on the page
+// Apply wrapWordsInElement
 document.querySelectorAll('p, div, span').forEach((element) => {
     wrapWordsInElement(element);
 });
 
+// highlight hovered words
 function addHoverHighlight(element) {
     element.classList.add('hover-highlight');
 }
 
+// unhighlight from hovered words
 function removeHoverHighlight(element) {
     element.classList.remove('hover-highlight');
 }
 
-
+// highlight clicked words
 function addClickHighlight(element) {
     element.classList.add('click-highlight');
     elementsMap.set(element, true);
 }
 
+// unhighlight from clicked words
 function removeClickHighlight(element) {
     element.classList.remove('click-highlight');
     elementsMap.delete(element);
@@ -77,7 +79,6 @@ function handleMouseOver(event) {
         if (hoveredElement !== null && !elementsMap.has(hoveredElement)) {
             removeHoverHighlight(hoveredElement);
         }
-
         addHoverHighlight(target);
         hoveredElement = target;
     }
@@ -96,17 +97,7 @@ function handleClick(event) {
     }
 }
 
-// Attach event listeners for mouseover and click
+// Create event listeners for mouseover and click
 document.addEventListener('mouseover', handleMouseOver);
 document.addEventListener('click', handleClick);
-
-chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-    if (request.action === 'disableContentScript') {
-        // Disable your content script functionality
-        console.log("Disabling content script");
-        // Add your disabling logic here, such as removing event listeners or stopping any ongoing actions
-        document.getElementById("close").removeEventListener("mouseover", handleMouseOver);
-        document.getElementById("close").removeEventListener("click", handleClick);
-    }
-});
 
